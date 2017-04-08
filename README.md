@@ -1,4 +1,4 @@
-# MiniDataBase
+# DeepDataBase
 Data Storage and Retrieval using B+ Tree Indexing.
 
 The database engine is designed on Relational model.
@@ -39,7 +39,7 @@ A separate multilevel B+ tree is created for each table. Each node contains maxi
 System also calculates the time taken by the search algorithm.
  
 ## DEVELOPMENT:
-The whole project is initially done on eclipse platform(C/C++ perspective).
+The whole project is initially done on eclipse platform(C/C++ perspective)-> in repo [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
 
 Further modifications are done on linux
 
@@ -47,7 +47,7 @@ For execution: Open directory MiniDatabase(branch:master) and on terminal
 
 1. Type **make**, it will compile the project.
 	
-2. Type **./tinydb** for running project.
+2. Type **./deepdb** for running project.
 	
 3. Type **make clean** for recompiling the project.
  
