@@ -51,10 +51,3 @@ For execution: Open directory MiniDatabase(branch:master) and on terminal
 	
 3. Type **make clean** for recompiling the project.
  
-
-## PROJECT CONTRIBUTORS:
-1.[Mandeep Singh](https://github.com/msdeep14) -> mandeepsinghshekhawat95@gmail.com ;; [msdeep14](http://msdeep14.github.io/)
-
-2.[Pawan Sheoran](https://github.com/pawan231)-> psheoran231@gmail.com
-
-
