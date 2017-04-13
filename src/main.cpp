@@ -2,8 +2,11 @@
 // Name        : myDB.cpp
 // Author      : mandeep singh,pawan sheoran
 // Version     :
-// Copyright   : Your copyright notice
+// Copyright   :    copyright 2017 reserved
+				//	GNU GENERAL PUBLIC LICENSE
+				//	Version 3, 29 June 2007
 // Description : mini database engine
+				// project moved to DeepDataBase
 //============================================================================
 
 #include "declaration.h"

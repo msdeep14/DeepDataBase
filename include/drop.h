@@ -23,5 +23,6 @@ void drop(){
 	}
 	else{
 		printf("\nerror\nexiting...\n\n");
+		return;
 	}
 }
