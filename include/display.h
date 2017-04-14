@@ -1,20 +1,20 @@
 #include "declaration.h"
 
-void display(char tab[], std::set<string> &display_col_list);
+void display(char tab[], std::map<string,int> &display_col_list);
 
 void process_select(vector <string> &token_vector){
-	set <string> display_col_list;
+	std::map <std::string,int> display_col_list;
 
 	//set which columns to display
 	if(token_vector[1][0] == 42){
-		display_col_list.insert("all_columns_set");
+		display_col_list.insert(make_pair("all_columns_set",0));
 	}else{
 		for(unsigned int i=1; i<token_vector.size()-2; i++){
 			if(token_vector[i] == "from"){
 				break;
 			}else{
 				cout<<token_vector[i]<<endl;
-				display_col_list.insert(token_vector[i]);
+				display_col_list.insert(make_pair(token_vector[i],0));
 			}
 		}
 	}
@@ -32,22 +32,48 @@ void process_select(vector <string> &token_vector){
 	display((char*)name,display_col_list);
 }
 
-void display(char tab[], std::set<string> &display_col_list){
+void display(char tab[], std::map<string,int> &display_col_list){
 	vector<int> store_col_no;
 	int ret=search_table(tab);
 	if(ret==0) {
 		printf("%s doesn't exist\n\n",tab);
 		return ;
 	}else if(ret==1){
-		//table exists
-		/*
-			while iterating through the columns, check in set if that column is asked in select query;
-		*/
 		table *temp;
 		int count;
 		int tot=0;
 		temp=(table*)malloc(sizeof(table));
 		FILE *fp=open_file(tab,const_cast<char*>("r"));
+		//table exists
+		//now check if entered columns are valid
+		if(display_col_list.find("all_columns_set") == display_col_list.end()){
+			if(fp){
+				fread(temp,1,sizeof(table),fp);
+				for(int k=0; k<temp->count; k++){
+					string temp_str(temp->col[k].col_name);
+					map<string,int>::iterator it = display_col_list.find(temp_str);
+					if(it != display_col_list.end()){
+						it->second = 1;
+					}
+				}
+				map<string,int> :: iterator it = display_col_list.begin();
+				for(it = display_col_list.begin(); it != display_col_list.end(); it++){
+					if(it->second == 0){
+						//column dont exist in table, query error
+						printf("\nerror\n");
+						cout<<it->first<<" is not a valid column for table "<<temp->name<<"\n";
+						return;
+					}
+				}
+			}else{
+				printf("\ninternal server error\nexiting...\n");
+				return;
+			}
+		}
+		/*
+			while iterating through the columns, check in set if that column is asked in select query;
+		*/
+
 		if(fp){
 			fread(temp,1,sizeof(table),fp);
 			count=temp->count;
@@ -60,7 +86,7 @@ void display(char tab[], std::set<string> &display_col_list){
 			void *data2[MAX_ATTR];
 			//display all columns;
 			printf("\n-----------------------------------------------\n");
-			if(display_col_list.count("all_columns_set") != 0){
+			if(display_col_list.find("all_columns_set") != display_col_list.end()){
 				for(int i=0;i<count;i++){
 						cout<<temp->col[i].col_name<<setw(20);
 						if(temp->col[i].type==INT)
@@ -113,7 +139,7 @@ void display(char tab[], std::set<string> &display_col_list){
 			}else{ //display selected columns;
 				for(int i=0;i<count;i++){
 					string temp_col_name(temp->col[i].col_name);
-					if(display_col_list.count(temp_col_name) >= 1){
+					if(display_col_list.find(temp_col_name) != display_col_list.end()){
 						store_col_no[i] = 1;
 						cout<<temp->col[i].col_name<<setw(20);
 						if(temp->col[i].type==INT){

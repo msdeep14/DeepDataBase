@@ -49,6 +49,9 @@ void tokenize(char query[]){
     */
     if(token_vector[0] == "select"){
         process_select(token_vector);
+    }else{
+        printf("\nsyntax error\n");
+        return;
     }
     /*
     for(int i=0;i<token_vector.size();i++){

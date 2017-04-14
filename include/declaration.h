@@ -21,6 +21,7 @@
 #include <fstream>
 #include <stack>
 #include <set>
+#include <map>
 
 #define INT 1
 #define VARCHAR 2
@@ -62,7 +63,7 @@ struct table{
 	int BLOCKSIZE;
 	FILE *fp;
 	void *blockbuf;
-	int rec_count;
+	int rec_count; //no of enteries in table
 };
 
 //extern functions
