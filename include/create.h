@@ -26,6 +26,8 @@ void verify_input_size_and_type(string type, string size){
 }*/
 
 table * create_table(char name[],int count){
+	//set to check for duplicate enteries of columns;
+	std::set <string> create_col_set;
 	table *toreturn = new table();
 	table *temp=new table();
 	temp->fp=NULL;
@@ -42,8 +44,18 @@ table * create_table(char name[],int count){
 	for(i=0;i<count;i++){
 		string type;
 		string size;
+		string temp_col_name;
 		//verify_input_size_and_type(type,size);
-		cin>>temp->col[i].col_name>>type>>size;
+		cin>>temp_col_name>>type>>size;
+		//check if the column name is already entered, if not make a entry in set and allow input
+		if(create_col_set.count(temp_col_name) == 0){
+			strcpy(temp->col[i].col_name,temp_col_name.c_str());
+			create_col_set.insert(temp_col_name);
+		}else{
+			printf("\nerror, colname already entered\n exiting...\n");
+			return NULL;
+		}
+
 		//check if entered datatype no. is correct
 		if(type.length()>1){
 			printf("\nwrong input(datatype should be (1=int or 2=varchar))\nexiting...\n\n");
