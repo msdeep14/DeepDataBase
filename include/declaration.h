@@ -20,6 +20,7 @@
 #include <string>
 #include <fstream>
 #include <stack>
+#include <set>
 
 #define INT 1
 #define VARCHAR 2
