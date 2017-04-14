@@ -1,7 +1,5 @@
 # DeepDataBase
-Data Storage and Retrieval using B+ Tree Indexing.
-
-The database engine is designed on Relational model.
+A Relational database model, data storage based on B+ tree indexing.
 
 ## QUERIES SUPPORTED BY SYSTEM
 1. SHOW Tables
