@@ -20,9 +20,7 @@
 #include <string>
 #include <fstream>
 #include <stack>
-#define fe first
-#define se second
-#define pb push_back
+
 #define INT 1
 #define VARCHAR 2
 
@@ -65,4 +63,8 @@ struct table{
 	void *blockbuf;
 	int rec_count;
 };
+
+//extern functions
+extern void process_select(std::vector <std::string> &token_vector);
+
 #endif

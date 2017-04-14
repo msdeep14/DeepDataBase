@@ -1,10 +1,21 @@
 #include "declaration.h"
 
-void display(){
-	char *tab;
-	tab=(char*)malloc(sizeof(char)*MAX_PATH);
-	cout<<"enter table name to display\n";
-	cin>>tab;
+void display(char tab[]);
+
+void process_select(vector <string> &token_vector){
+	for(unsigned int i=0;i<token_vector.size();i++){
+		cout<<token_vector[i]<<endl;
+	}
+	const char *name = (char*)malloc(sizeof(char)*MAX_NAME);
+	name = token_vector[token_vector.size() - 1].c_str();
+	display((char*)name);
+}
+
+void display(char tab[]){
+	//char *tab;
+	//tab=(char*)malloc(sizeof(char)*MAX_PATH);
+	//cout<<"enter table name to display\n";
+	//cin>>tab;
 	int ret=search_table(tab);
 	if(ret==0) {
 		printf("%s doesn't exist\n\n",tab);

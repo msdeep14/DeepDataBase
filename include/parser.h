@@ -4,3 +4,5 @@
 */
 
 #include "declaration.h"
+
+extern void get_query();

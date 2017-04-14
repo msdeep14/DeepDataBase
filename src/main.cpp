@@ -16,6 +16,7 @@
 #include "display.h"
 #include "search.h"
 #include "drop.h"
+#include "parser.h"
 
 using namespace std;
 
@@ -75,7 +76,8 @@ void input(){
 				drop();
 				break;
 			case 5:
-				display();
+				//display();
+				get_query();
 				break;
 			case 6:
 				search();
