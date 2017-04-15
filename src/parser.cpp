@@ -10,7 +10,7 @@
 
 /*
     * QUERIES (terminate with semicolon(;), tokens should be space separated)
-    1. SELECT * FROM TABLE_NAME;
+    1. SELECT * FROM TABLE_NAME; OR SELECT COL1,COL2... FROM TABLE_NAME;
 
 */
 #include "parser.h"

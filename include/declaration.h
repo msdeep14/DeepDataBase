@@ -23,6 +23,7 @@
 #include <set>
 #include <map>
 
+
 #define INT 1
 #define VARCHAR 2
 
@@ -68,5 +69,13 @@ struct table{
 
 //extern functions
 extern void process_select(std::vector <std::string> &token_vector);
+extern void create();
+extern int search_table(char tab_name[]);
+extern void insert();
+extern void search();
+extern void show_tables();
+extern int insert_record(int primary_key, int record_num);
+extern FILE *open_file(char t_name[] ,char perm[]);
+extern int store_meta_data(struct table *t_ptr);
 
 #endif
