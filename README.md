@@ -41,7 +41,7 @@ The whole project is initially done on eclipse platform(C/C++ perspective)-> in 
 
 Further modifications are done on linux
 
-For execution: Open directory MiniDatabase(branch:master) and on terminal
+For execution: Open directory DeepDatabase(branch:master) and on terminal
 
 1. Type **make**, it will compile the project.
 	
