@@ -23,12 +23,6 @@ int record_size(table *temp){
 	return size;
 }
 
-//verify input
-/*
-void verify_input_size_and_type(string type, string size){
-
-}*/
-
 table * create_table(char name[],int count){
 	//set to check for duplicate enteries of columns;
 	std::set <string> create_col_set;
@@ -49,7 +43,6 @@ table * create_table(char name[],int count){
 		string type;
 		string size;
 		string temp_col_name;
-		//verify_input_size_and_type(type,size);
 		cin>>temp_col_name>>type>>size;
 		//check if the column name is already entered, if not make a entry in set and allow input
 		if(create_col_set.count(temp_col_name) == 0){

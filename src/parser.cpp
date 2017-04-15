@@ -15,7 +15,8 @@
 */
 #include "parser.h"
 
-void tokenize(char query[]){
+//tokenize select query for processing
+void tokenize_select(char query[]){
     // break the query into tokens
     char buffer[1024];
     vector <string> token_vector;
@@ -29,36 +30,14 @@ void tokenize(char query[]){
         }
         token = strtok(NULL, " ,;");
     }
-    /*
-    for(unsigned int i = 0; i < temp.size(); i++){
-        if(temp[i].size() == 1 && temp[i][0] == 59){
-            //do nothing, terminate the string after the semicolon
-            break;
-        }else if(temp[i][temp[i].size() - 1] == ';' || temp[i][temp[i].size() - 1] == ','){
-            string new_token_string = temp[i].substr(0,temp[i].size()-2);
-            token_vector.push_back(new_token_string);
-        }else{
-            token_vector.push_back(temp[i]);
-        }
-    }
-    temp.clear();
-    */
+    process_select(token_vector);
+}
 
+//tokenize create query for processing
+void tokenize_create(char query[]){
     /*
-        if token[0] dont belong to {"select","create","insert","drop","describe","show"}, then ERROR
+        create table table_name(id int not null,name varchar(20),city varchar(30) not null, primary key(id));
     */
-    if(token_vector[0] == "select"){
-        process_select(token_vector);
-    }else{
-        printf("\nsyntax error\n");
-        return;
-    }
-    /*
-    for(int i=0;i<token_vector.size();i++){
-        cout<<token_vector[i]<<"\n";
-    }*/
-
-    // store tokens into particular data structure
 
 }
 
@@ -70,12 +49,24 @@ void get_query(){
     fflush(stdout);
     fgets(query,sizeof(char)*MAX_NAME,stdin);
     fgets(query,sizeof(char)*MAX_NAME,stdin);
-    /*
-    //take input until ';' is entered
-    if(strcmp(query[strlen(query)-1],';') != 0){
 
-    }*/
-    tokenize(query);
+    //
+    char buffer[1024];
+    strcpy(buffer, query);
+    char *token = strtok(buffer, " ");
+    if(token){
+        string token_temp(token);
+        if(token_temp != " " && token_temp != "\n"){
+            //cout<<"token:: "<<token<<endl;
+            if(token_temp == "select"){
+                tokenize_select(query);
+            }else if(token_temp == "create"){
+                tokenize_create(query);
+            }
+        }
+    }
+
+
     //printf("\nquery:: %s\n",query);
 }
 
