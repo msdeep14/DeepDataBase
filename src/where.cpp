@@ -69,7 +69,6 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                        fpz=fopen(str1,"r");
                        for(int j=0; j < inp1.count;j++){
                            string temp_str(inp1.col[j].col_name);
-                           //if(display_col_list.find(temp_str) != display_col_list.end()){
                                if(inp1.col[j].type==INT){
                                    fread(&c,1,sizeof(int),fpz);
                                    if(display_col_list.find(temp_str) != display_col_list.end())
@@ -80,7 +79,6 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                                    if(display_col_list.find(temp_str) != display_col_list.end())
                                    cout<<d<<"\t";
                                }
-                           //}
                        }
                        printf("\n------------------------------------\n");
                        fclose(fpz);
@@ -132,12 +130,14 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                     * check if the entry matches
                 */
                 int col_number = 1;
+                int col_type = 0;
                 int flag = 0;
-                int total_size = 0;
                 for(int i = 0; i < inp1.count ;i++){
                     if(strcmp(inp1.col[i].col_name,col_to_search.c_str()) == 0){
                         col_number = i + 1;
+                        col_type = inp1.col[i].type;
                         flag = 1;
+                        cout<<"col_number,col_type::"<<col_number<<", "<<col_type<<endl;
                         break;
                     }
                 }
@@ -146,16 +146,91 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                     return ;
                 }else{
                     //search for entry;
-                    for(int i =0 ;i<inp1.rec_count; i++){
-
+                    flag = 0;
+                    int c;
+                    char d[MAX_NAME];
+                    //cout<<"C........"<<c<<endl;
+                    for(int i=0;i<inp1.rec_count;i++){
+                            FILE *fpr;
+                            char *str;
+                            str=(char*)malloc(sizeof(char)*MAX_PATH);
+                            sprintf(str,"table/%s/file%d.dat",tab,i);
+                            //cout<<str<<endl;
+                            fpr=fopen(str,"r");
+                            for(int j = 0; j < col_number; j++){
+                                //make it more efficient;
+                                    if(inp1.col[j].type==INT){
+                                        fread(&c,1,sizeof(int),fpr);
+                                        //cout<<"c::"<<c<<endl;
+                                    }else if(inp1.col[j].type==VARCHAR){
+                                        fread(d,1,sizeof(char)*MAX_NAME,fpr);
+                                        //cout<<"d:: "<<d<<endl;
+                                    }
+                            }
+                            if(col_type == INT){
+                                int col_int_value = atoi( col_value.c_str());
+                                if(col_int_value == c){
+                                    //display the requried fields
+                                    //printf("col_type is int");
+                                    int c1;
+                                    char d1[MAX_NAME];
+                                    fclose(fpr);
+                                    fpr=fopen(str,"r");
+                                    printf("\n-------------------------------------\n");
+                                    for(int j=0; j < inp1.count; j++){
+                                        string temp_str(inp1.col[j].col_name);
+                                            if(inp1.col[j].type==INT){
+                                                fread(&c1,1,sizeof(int),fpr);
+                                                if(display_col_list.find(temp_str) != display_col_list.end())
+                                                cout<<c1<<"\t";
+                                            }
+                                            else if(inp1.col[j].type==VARCHAR){
+                                                fread(d1,1,sizeof(char)*MAX_NAME,fpr);
+                                                if(display_col_list.find(temp_str) != display_col_list.end())
+                                                cout<<d1<<"\t";
+                                            }
+                                    }
+                                    printf("\n-------------------------------------\n");
+                                    flag = 1;
+                                }
+                            }else if(col_type == VARCHAR){
+                                //cout<<"d,col_value:: "<<d<<" ,"<<col_value.c_str()<<endl;
+                                if(strcmp(d,col_value.c_str()) == 0){
+                                    //printf("col_type varchar");
+                                    int c1;
+                                    char d1[MAX_NAME];
+                                    fclose(fpr);
+                                    fpr=fopen(str,"r");
+                                    printf("\n-------------------------------------\n");
+                                    for(int j=0; j < inp1.count; j++){
+                                        string temp_str(inp1.col[j].col_name);
+                                            if(inp1.col[j].type==INT){
+                                                fread(&c1,1,sizeof(int),fpr);
+                                                if(display_col_list.find(temp_str) != display_col_list.end())
+                                                cout<<c1<<"\t";
+                                            }
+                                            else if(inp1.col[j].type==VARCHAR){
+                                                fread(d1,1,sizeof(char)*MAX_NAME,fpr);
+                                                if(display_col_list.find(temp_str) != display_col_list.end())
+                                                cout<<d1<<"\t";
+                                            }
+                                    }
+                                    printf("\n-------------------------------------\n");
+                                    flag = 1;
+                                }
+                            }else{
+                                printf("\ninternal server error\nexiting...\n\n");
+                                return;
+                            }
+                            cout<<"\n\n";
+                            free(str);
+                            fclose(fpr);
+                            if(flag == 1){
+                                break;
+                            }
                     }
                 }
-
             }
-
         }
-
-
-
     }
 }
