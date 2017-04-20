@@ -68,7 +68,7 @@ struct table{
 };
 
 //extern functions
-extern void process_select(std::vector <std::string> &token_vector);
+//extern void process_select(std::vector <std::string> &token_vector);
 extern void create();
 extern int search_table(char tab_name[]);
 extern void insert();

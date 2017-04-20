@@ -125,6 +125,31 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                }
             }else{
                 //brute force search
+                //column entered not a primary key
+                /*
+                    * identify the column no.
+                    * fseek for column in file file%d.dat
+                    * check if the entry matches
+                */
+                int col_number = 1;
+                int flag = 0;
+                int total_size = 0;
+                for(int i = 0; i < inp1.count ;i++){
+                    if(strcmp(inp1.col[i].col_name,col_to_search.c_str()) == 0){
+                        col_number = i + 1;
+                        flag = 1;
+                        break;
+                    }
+                }
+                if(flag == 0){
+                    printf("\ncolumn doesn't exist\nexiting...\n\n");
+                    return ;
+                }else{
+                    //search for entry;
+                    for(int i =0 ;i<inp1.rec_count; i++){
+
+                    }
+                }
 
             }
 

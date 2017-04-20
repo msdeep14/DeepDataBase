@@ -14,6 +14,7 @@
 
 */
 #include "parser.h"
+#include "display.h"
 
 //tokenize select query for processing
 void tokenize_select(char query[]){
