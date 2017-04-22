@@ -149,11 +149,11 @@ void display(char tab[], std::map<string,int> &display_col_list){
 				cout<<"\n";
 				printf("-----------------------------------------------\n");
 
-				int c;
-				char d[MAX_NAME];
+				int c1;
+				char d1[MAX_NAME];
 				//cout<<"C........"<<c<<endl;
 				for(int i=0;i<temp->rec_count;i++){
-						FILE *fpr;
+						FILE *fpt;
 						char *str;
 						str=(char*)malloc(sizeof(char)*MAX_PATH);
 						sprintf(str,"table/%s/file%d.dat",tab,i);
@@ -167,26 +167,26 @@ void display(char tab[], std::map<string,int> &display_col_list){
     						fclose(file);
 						}*/
 
-						fpr=fopen(str,"r");
+						fpt=fopen(str,"r");
 						for(int j=0;j<temp->count;j++){
 							//if(store_col_no[j] == 1){
 							//make it more efficient;
 								if(temp->col[j].type==INT){
-									fread(&c,1,sizeof(int),fpr);
+									fread(&c1,1,sizeof(int),fpt);
 									if(store_col_no[j] == 1)
-									cout<<c<<setw(20);
+									cout<<c1<<setw(20);
 								}else if(temp->col[j].type==VARCHAR){
 									//fread(d,1,sizeof(char)*MAX_NAME,fpr);
 									//cout<<"d::"<<d<<endl;
-									fscanf(fpr,"%s",d);
+									fread(d1,1,sizeof(char)*MAX_NAME,fpt);
 									if(store_col_no[j] == 1)
-									cout<<d<<setw(20);
+									cout<<d1<<setw(20);
 								}
 							//}
 						}
 						cout<<"\n\n";
 						free(str);
-						fclose(fpr);
+						fclose(fpt);
 				}
 			}
 
