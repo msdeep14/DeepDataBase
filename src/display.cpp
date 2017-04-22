@@ -53,7 +53,7 @@ void process_select(vector <string> &token_vector){
 }
 
 void display(char tab[], std::map<string,int> &display_col_list){
-	printf("\n111\n");
+	//printf("\n111\n");
 	vector<int> store_col_no;
 	int ret=search_table(tab);
 	if(ret==0) {
