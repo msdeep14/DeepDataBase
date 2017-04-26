@@ -3,6 +3,7 @@
 #include "insert.h"
 #include "file_handler.h"
 #include "BPtree.h"
+#include "aes.h"
 
 int search_table(char tab_name[]){
 	//check if new table already exists in table list or not
