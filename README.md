@@ -1,9 +1,11 @@
 # DeepDataBase
 A Relational database model, data storage based on B+ tree indexing.
 
+## initial development : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
+
 ## QUERIES SUPPORTED BY SYSTEM
 1. SHOW Tables
-2. CREATE Tables
+2. CREATE Table
 3. INSERT INTO Table
 4. DISPLAY Table contents
 5. SEARCH INTO Table
@@ -29,8 +31,13 @@ A separate multilevel B+ tree is created for each table. Each node contains maxi
 #### 3. Storing Meta Data of Tables:
  Meta Data of the tables are stored separately which provides quick access to several information like current number of records, table name, etc.
  
-#### 4. B+ Tree Indexed Search:
- For searching a record in file for particular table, B+ tree indexed search is implemented. Search is only based on primary  key right now.
+#### 4. Search:
+
+##### 1. B+ Indexed Search
+ For searching a record in file for particular table, B+ tree indexed search is implemented.B+ indexed search is based on primary key
+ 
+##### 2. Brute Force Search
+For searching records other than primary key from table, brute force search algorithm is implemented.
  
  Advantages of B+ Tree Indexing [here](https://www.tutorialcup.com/dbms/b-plus-tree.htm)
  
