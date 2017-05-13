@@ -57,7 +57,7 @@ For execution: Open directory DeepDatabase(branch:master) and on terminal
 3. Type **make clean** for recompiling the project.
 
 ## IN DEVELOPMENT:
-For displaying the table contents, you have to select option 5 from menu and the queries supported by it are, do care about syntax, hence complete parser is not implemented.
+For displaying the table contents, you have to select option 5 from menu and the queries supported by it are, do care about syntax, since complete parser is not implemented.
 
 select * from table_name;
 
