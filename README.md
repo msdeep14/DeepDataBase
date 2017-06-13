@@ -1,6 +1,6 @@
 # DeepDataBase
 
-![logo](https://github.com/msdeep14/DeepDataBase/images/deepdb.png)
+![logo](https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png)
 
 A Relational database model, data storage based on B+ tree indexing.
 
