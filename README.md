@@ -1,8 +1,10 @@
 # DeepDataBase
 
+#### A Relational database model, data storage based on B+ tree indexing
+
 ![logo](https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png)
 
-A Relational database model, data storage based on B+ tree indexing.
+
 
 ## initial development : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
 
