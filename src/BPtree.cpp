@@ -105,8 +105,11 @@ class Btreenode
     /*Function that inserts a new record in a node which
        is not yet full */
     void insert_key(int key, int point){
+        //get the position in vector keys to insert
+		//new key so that keys[] remains sorted;
         int pos = get_next_key(key);
         keys.insert(keys.begin() + pos, key);
+        //insert position of key inside pointers;
         if (leaf)
             pointers.insert(pointers.begin() + pos, point);
         else
@@ -144,13 +147,24 @@ class Btreenode
     }
 
     //Overloading write operator to write to a file
+    /*
+		write to file in format
+		(is_leaf_or_not,keys_size,for(0 to key_size)<keys_Values>,pointer_size,for(0to pointers_size)<pointer_values>, next_node);
+
+		according to sample program
+		tree0.dat will store data in following format
+		(1 8 1 3 5 6 7 8 9 12 8 2 4 1 7 3 0 6 5 -1);
+		*/
     friend std::ofstream & operator<<(std::ofstream & os, const Btreenode & en){
+        // is leaf or not;
         os << en.leaf << " ";
+        // keys size
         os << (int) en.keys.size() << " ";
         for (unsigned int i = 0; i < en.keys.size(); i++){
             os << en.keys[i] << " ";
         }
         os << (int) en.pointers.size() << " ";
+        // pointers are the indices of the stored elements in vector a;
         for (unsigned int i = 0; i < en.pointers.size(); i++){
             os << en.pointers[i] << " ";
         }
@@ -160,6 +174,7 @@ class Btreenode
 
     //Overloading read operator to read from a fil
     friend std::ifstream & operator>>(std::ifstream & is, Btreenode & en){
+        // read all the data stored in file <descrbed in << operator overloading>
         int ts;
         is >> en.leaf;
         is >> ts;
@@ -192,9 +207,11 @@ class Btreenode
 void BPtree :: write_node(int filenum, Btreenode n){
     char *str;
     str = (char *) malloc(sizeof(char) * BPTREE_MAX_FILE_PATH_SIZE);
+    //if filenum=0; open tree0.dat;
     sprintf(str, "table/%s/tree/tree%d.dat", tablename,filenum);
     std::ofstream out_file(str, std::ofstream::binary |  std::ofstream::out | std::ofstream::trunc);
     free(str);
+    //write data to out_file root=n()
     out_file << n;
     out_file.close();
 }
@@ -240,10 +257,14 @@ BPtree :: BPtree(char table_name[]){
         out_file.write((char *) (&root_num), sizeof(root_num));
         //out_file << files_till_now << " " << root_num;
         out_file.close();
+        //initialize with root node =leaf node;
         Btreenode root(true);
+        //set next_node=-1; as it is root;
         root.set_next(-1);
+        //write node data to outfile;
         write_node(0, root);
-    }else{
+    }//if file already created read the previously stored data;
+    else{
         /* Read old Meta Data */
         in_file >> files_till_now >> root_num;
         in_file.close();
@@ -274,11 +295,16 @@ Btreenode BPtree::search_leaf(int primary_key){
     //Traversing the Tree from root till leaf
     while (!n.isleaf()){
         q = n.num_pointers();
+        //check primary key if it is smaller than the key[0]
         if (primary_key <= n.get_key(1)){
+            //set curr_node =pointers[0];
             curr_node = n.get_pointer(1);
-        }else if (primary_key > n.get_key(q - 1)){
+        }//check if primary key is greater than key[q-1];// q==size of vector keys;
+        else if (primary_key > n.get_key(q - 1)){
+            //set curr_node = pointers[q-1];
             curr_node = n.get_pointer(q);
         }else{
+            //find the correct position of key to be stored;
             curr_node = n.get_pointer(n.get_next_key(primary_key) + 1);
         }
         read_node(curr_node, n);
@@ -307,15 +333,19 @@ int BPtree::get_record(int primary_key){
 //key is first coloumn of database either can be int or varchar;
 int BPtree::insert_record(int primary_key, int record_num){
 	//printf("pri %d\n record_num %d",primary_key,record_num);
+    //Btreenode n= leaf=true, next_node =-1;
     Btreenode n(true);
     int q, j, prop_n, prop_k, prop_new, curr_node = root_num;
     bool finish = false;
     std::stack < int >S;
+    //read all the data of node stored in file tree%d.data (%d==curr_node=root_num=file_no);
+	//now n contains all the previously stored data;
     read_node(curr_node, n);
 
     //Traverse the tree till we get the leaf node;
     while (!n.isleaf()){
         S.push(curr_node);      //Storing address in case of split
+        //num_pointers==function that returns size of pointers vector from the block file;
         q = n.num_pointers();
         if (primary_key <= n.get_key(1)){
             curr_node = n.get_pointer(1);
@@ -324,6 +354,7 @@ int BPtree::insert_record(int primary_key, int record_num){
         }else{
             curr_node = n.get_pointer(n.get_next_key(primary_key) + 1);
         }
+        //get all the data of node n from file tree%d.dat(%d==curr_node);
         read_node(curr_node, n);
     }
 
@@ -337,7 +368,10 @@ int BPtree::insert_record(int primary_key, int record_num){
     if (!n.full()){
         //leaf node empty insert here and exit
         n.insert_key(primary_key, record_num);
+        //n is updated now;
+		//now write this node back to file;
         write_node(curr_node, n);
+        //update meta-data after key is inserted successfully;
         update_meta_data();
         return BPTREE_INSERT_SUCCESS;
     }
@@ -346,19 +380,27 @@ int BPtree::insert_record(int primary_key, int record_num){
     Btreenode temp(true), new_node(true);
 
     temp = n;
+    //insert the key and pointer into n i.e. temp now;
     temp.insert_key(primary_key, record_num);
     j = ceil((BPTREE_MAX_KEYS_PER_NODE + 1.0) / 2.0);
+    //if max_key_per_node = 30;; j=16;
+    //copy the first half values to new node(temp) created;
     n.copy_first(temp, j);
+    //now one file is increased to store the new node;
     files_till_now++;
+    //  set new_node to returned next_node;
     new_node.set_next(n.get_next());
     n.set_next(files_till_now);
+    //copy remaining values to other node created(new_node);
     new_node.copy_last(temp, j);
-
+    //return keys[j-1];
     prop_k = temp.get_key(j);
     prop_new = files_till_now;
     prop_n = curr_node;
+    //write back the two new nodes created to their respective files;
     write_node(files_till_now, new_node);
     write_node(curr_node, n);
+    //empty keys[] and pointers[];
     temp.clear_data();
     new_node.clear_data();
 
