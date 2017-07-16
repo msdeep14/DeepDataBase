@@ -33,7 +33,7 @@ void insert_command(char tname[],void *data[],int total){
 
 	//insert into table and write to btree file nodes
 	ret=obj.insert_record(*((int *)data[0]),temp->rec_count);
-	if(ret==2){
+	if(ret == 2){
 		cout<<"key already exists\n";
 		cout<<"exiting...\n";
 		return ;
@@ -116,9 +116,9 @@ void insert(){
 		int size=0;
 		int total=0;
 		for(int i=0;i<count;i++){
-			if(inp1.col[i].type==INT){
+			if(inp1.col[i].type == INT){
 				data[i] =(int*) malloc(sizeof(int));
-				total+=sizeof(int);
+				total += sizeof(int);
 				string inp_int;
 				cin>>inp_int;
 				if(inp_int.length() > (unsigned)inp1.col[i].size){
