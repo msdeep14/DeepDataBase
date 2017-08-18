@@ -1,4 +1,6 @@
-/**/
+/*
+// code references : DFC query builder by BUG_ASSASINS team
+*/
 
 #include "BPtree.h"
 
