@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : insert.cpp
  // Author  : Mandeep singh
  // Purpose : code for inserting contents to
  //			  created table

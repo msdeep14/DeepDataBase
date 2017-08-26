@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : file_handler.h
  // Author  : Mandeep singh
  // Purpose : Header file for file_handler.cpp
  //

@@ -12,7 +12,7 @@
 
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : main.cpp
  // Author  : Mandeep singh
  // Purpose : program starter code
  //			  DeepDataBase execution starts here

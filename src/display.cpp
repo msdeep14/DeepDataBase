@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : display.cpp
  // Author  : Mandeep singh
  // Purpose : code for displaying table contents
  //

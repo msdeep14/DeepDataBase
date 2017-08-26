@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : where.h
  // Author  : Mandeep singh
  // Purpose : Header file for where.cpp
  // Created : 13-04-2017

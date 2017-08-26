@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : declaration.h
  // Author  : Mandeep singh
  // Purpose : contains all the declarations of project
  //

@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : create.cpp
  // Author  : Mandeep singh
  // Purpose : code for creating new tables
  //

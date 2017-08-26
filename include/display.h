@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : display.h
  // Author  : Mandeep singh
  // Purpose : Header file for display.cpp
  //

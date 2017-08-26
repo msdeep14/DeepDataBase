@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : search.cpp
  // Author  : Mandeep singh
  // Purpose : searching of table contents
  //			  based on primary key or other attributes

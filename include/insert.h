@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : insert.h
  // Author  : Mandeep singh
  // Purpose : Header file for insert.cpp
  //

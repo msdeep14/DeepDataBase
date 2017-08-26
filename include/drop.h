@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : drop.h
  // Author  : Mandeep singh
  // Purpose : contains code for deletion of table
  //

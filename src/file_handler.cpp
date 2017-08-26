@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : file_handler.cpp
  // Author  : Mandeep singh
  // Purpose : code for creating new files and folders (file handling operations)
  //

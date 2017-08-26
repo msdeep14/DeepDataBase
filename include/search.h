@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : search.h
  // Author  : Mandeep singh
  // Purpose : Header file for search.cpp
  //

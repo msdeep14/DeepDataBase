@@ -8,7 +8,7 @@
 */
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : where.cpp
  // Author  : Mandeep singh
  // Purpose : code for execution of where clause
  //

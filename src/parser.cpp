@@ -15,7 +15,7 @@
 */
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : parser.cpp
  // Author  : Mandeep singh
  // Purpose : parses the query
  //

@@ -1,6 +1,6 @@
 /*
 // ----------------------------------------------------------------------
- // File    : BPtree.h
+ // File    : parser.h
  // Author  : Mandeep singh
  // Purpose : Header file for parser.cpp
  //
