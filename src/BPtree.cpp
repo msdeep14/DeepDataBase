@@ -339,7 +339,7 @@ int BPtree::insert_record(int primary_key, int record_num){
     Btreenode n(true);
     int q, j, prop_n, prop_k, prop_new, curr_node = root_num;
     bool finish = false;
-    std::stack < int >S;
+    std::stack < int > S;
     //read all the data of node stored in file tree%d.data (%d==curr_node=root_num=file_no);
 	//now n contains all the previously stored data;
     read_node(curr_node, n);
@@ -396,9 +396,9 @@ int BPtree::insert_record(int primary_key, int record_num){
     //copy remaining values to other node created(new_node);
     new_node.copy_last(temp, j);
     //return keys[j-1];
-    prop_k = temp.get_key(j);
+    prop_k = temp.get_key(j); // key to be moved to new root
     prop_new = files_till_now;
-    prop_n = curr_node;
+    prop_n = curr_node; // node that is splitted at first place
     //write back the two new nodes created to their respective files;
     write_node(files_till_now, new_node);
     write_node(curr_node, n);
@@ -413,7 +413,10 @@ int BPtree::insert_record(int primary_key, int record_num){
             /*Last element splitted was root
                so create new root and assign meta_data */
             Btreenode nn(false);
+            // insert key to new root
             nn.push_key(prop_k);
+            // insert two pointer associated to this key
+            // for left and right
             nn.push_pointer(prop_n);
             nn.push_pointer(prop_new);
             files_till_now++;
