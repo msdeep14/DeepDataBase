@@ -142,15 +142,22 @@ void create(){
 	cin>>name;
 
 	//check if new table already exists in table list or not
+	int check = search_table(name);
+	if(check == 1){
+		cout << "\nERROR!\n" << name << " already exists\n";
+		cout << "\n------------------------------------------------\n";
+		return;
+	}
 	FILE *fp=fopen("./table/table_list","r+");
 	if(fp==NULL) cout<<"file pointer is null\n";
-	char tab_name[20];
-	while(fscanf(fp,"%s",tab_name)!=EOF){
-		if(strcmp(tab_name,name)==0){
-			cout<<"error\ntable name already exists\n";
-			return;
-		}
-	}
+
+	// char tab_name[20];
+	// while(fscanf(fp,"%s",tab_name)!=EOF){
+	// 	if(strcmp(tab_name,name)==0){
+	// 		cout<<"error\ntable name already exists\n";
+	// 		return;
+	// 	}
+	// }
 
 	//enter table details if not exist
 	cout<<"enter no. of columns: ";
