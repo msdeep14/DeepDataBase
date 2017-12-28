@@ -47,7 +47,7 @@ int record_size(table *temp){
 
 table * create_table(char name[],int count){
 	//set to check for duplicate enteries of columns;
-	std::set <string> create_col_set;
+	std::unordered_set <string> create_col_set;
 	table *toreturn = new table();
 	table *temp=new table();
 	temp->fp=NULL;

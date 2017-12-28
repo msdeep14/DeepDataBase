@@ -50,7 +50,7 @@ void process_select(vector <string> &token_vector){
 			}
 		}
 	}
-	if(token_vector.size() > numOfCol + 3){
+	if((int)token_vector.size() > numOfCol + 3){
 		if(token_vector[numOfCol + 3] == "where"){
 			whereflag = 1;
 			string col_to_search = token_vector[numOfCol + 4];
