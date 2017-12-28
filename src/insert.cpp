@@ -59,8 +59,8 @@ void insert_command(char tname[],void *data[],int total){
 	//insert into table and write to btree file nodes
 	ret=obj.insert_record(*((int *)data[0]),temp->rec_count);
 	if(ret == 2){
-		cout<<"key already exists\n";
-		cout<<"exiting...\n";
+		cout << "\nkey already exists\n";
+		cout << "\nexiting...\n";
 		return ;
 	}
 
@@ -106,17 +106,14 @@ void insert(){
 	cin>>tab;
 	int check=search_table(tab);
 	if(check==0){
-		printf("Table %s not exists\n",tab);
+		printf("\nTable \" %s \" don't exist in database\n",tab);
 		return ;
 	}
 
 	else{
-		cout<<"\nTable exists enter data\n\n";
-		char dir[100];
-		strcpy(dir,"./table/");
-		strcat(dir,tab);
-		strcat(dir,"/met");
-     	table inp1;
+		cout << "\nTable exists, enter data\n\n";
+
+    table inp1;
 		int count;
 		//read column details from file;
 		FILE *fp = open_file(tab, const_cast<char*>("r"));
