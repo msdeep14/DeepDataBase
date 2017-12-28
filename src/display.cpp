@@ -147,13 +147,35 @@ void display(char tab[], std::map<string,int> &display_col_list){
 						sprintf(str,"table/%s/file%d.dat",tab,i);
 						//cout<<str<<endl;
 						fpr=fopen(str,"r");
-						for(int j=0;j<temp->count;j++){
-							if(temp->col[j].type==INT){
-								fread(&c,1,sizeof(int),fpr);
-								cout<<c<<setw(20);
-							}else if(temp->col[j].type==VARCHAR){
-								fread(d,1,sizeof(char)*MAX_NAME,fpr);
-								cout<<d<<setw(20);
+
+						// decrypt the encrpted data from file
+						aes_context ctx;
+						char *secret_key = (char*)malloc(sizeof(char)*256);
+					    strcpy(secret_key,"key");
+						unsigned char key[32];
+						memset(key,0,32);
+						memcpy( key, secret_key, 32);
+					    aes_set_key( &ctx, key, 256);
+
+						for(int j=0; j<temp->count; j++){
+							unsigned char buf[16];
+							char *out = (char*)malloc(sizeof(char)*256);
+							memset(buf,0,16);
+							if(temp->col[j].type == INT){
+								fread(buf, 1, sizeof(buf), fpr);
+								cout << "buf int : " << buf << endl;
+								aes_decrypt( &ctx, buf, buf );
+								// cout << "buf int : " << buf << endl;
+						        memcpy(out,buf,32);
+								cout << out << setw(20);
+								//cout<<c<<setw(20);
+							}else if(temp->col[j].type == VARCHAR){
+								fread(buf, 1, sizeof(buf), fpr);
+								cout << "buf char : " << buf << endl;
+								aes_decrypt(&ctx, buf, buf);
+								// cout << "buf char : " << buf << endl;
+								memcpy(out,buf,32);
+								cout << out << setw(20);
 							}
 						}
 						cout<<"\n\n";

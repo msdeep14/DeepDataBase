@@ -69,8 +69,9 @@ int take_input_option(){
 	string option;
 	fflush(stdout);
 	fflush(stdin);
-	printf("\n select the query to implement\n");
-	printf("\n1.show all tables in database\n2.create table\n3.insert into table\n4.drop table\n5.display table contents\n6.search table or search inside table\n7.help\n8.quit\n\n");
+	printf("\n-------------------------------------\n");
+	printf("\n SELECT QUERY TO EXECUTE\n");
+	printf("\n1. SHOW TABLES\n2. CREATE TABLE\n3. INSERT INTO TABLE\n4. DROP TABLE\n5. SELECT TABLE\n6. SEARCH TABLE\n7. HELP\n8. QUIT\n\n");
 	cin>>option;
 	if(option.length() >1){
 		printf("\nwrong input\nexiting...\n\n");

@@ -24,5 +24,6 @@
 // ----------------------------------------------------------------------
 */
 #include "declaration.h"
+#include "aes.h"
 
 extern void process_select(vector <string> &token_vector);

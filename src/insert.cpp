@@ -82,14 +82,53 @@ void insert_command(char tname[],void *data[],int total){
 	FILE *fpr=fopen(str,"w+");
     int x;
 	char y[MAX_NAME];
+
+	// aes key
+	aes_context ctx;
+
+	char *secret_key = (char*)malloc(sizeof(char)*256);
+    strcpy(secret_key,"key");
+
+	unsigned char key[32];
+    memset(key,0,32);
+    memcpy( key, secret_key, 32);
+	aes_set_key( &ctx, key, 256);
+
 	for(int j=0;j<temp->count;j++){
+
 		if(temp->col[j].type==INT){
-			 x = *(int *)data[j];
-			fwrite(&x,sizeof(int),1,fpr);
+			unsigned char buf[16];
+		    memset(buf,0,16);
+			x = *(int *)data[j];
+
+			// encrypt x
+			string temp_str = to_string(x);
+			char temp_char[16];
+			strcpy(temp_char, temp_str.c_str());
+			char *temp_ch = temp_char;
+			memcpy(buf, temp_ch, 16);
+
+ 			aes_encrypt( &ctx, buf, buf);
+ 			cout << "buffer : \n";
+ 			cout << buf << endl;
+ 			cout << x << endl;
+			// aes_decrypt( &ctx, buf, buf );
+			// cout << "decrpyt: " << buf << endl;
+			fwrite(buf, sizeof(buf), 1, fpr);
 		}
 		else if(temp->col[j].type==VARCHAR){
+			unsigned char buf[16];
+		    memset(buf,0,16);
 			strcpy(y,(char *)data[j]);
-			fwrite(y,sizeof(char)*MAX_NAME,1,fpr);
+			// encrypt y
+			memcpy( buf, y, 16);
+			aes_encrypt( &ctx, buf, buf );
+			cout << "buffer : \n";
+			cout << buf << endl;
+			cout << y << endl;
+			// aes_decrypt(&ctx, buf, buf);
+			// cout << "decrpyt: " << buf << endl;
+			fwrite(buf, sizeof(buf), 1, fpr);
 		}
 	}
 	fclose(fpr);
