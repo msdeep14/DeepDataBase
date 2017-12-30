@@ -34,10 +34,10 @@
 #include "where.h"
 #include "BPtree.h"
 
-void select_particular_query(string table_name,string col_to_search,string col_value,std::map<string,int> &display_col_list){
+void select_particular_query(std::string table_name, std::string col_to_search, std::string col_value,std::map<std::string, int> &display_col_list){
     //process the particular query
     char *tab = (char*)malloc(sizeof(char)*MAX_NAME);
-    strcpy(tab,table_name.c_str());
+    strcpy(tab, table_name.c_str());
     int check = search_table(tab);
     if(check == 1){
         /*
@@ -53,8 +53,8 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                 display_col_list.clear();
                 fread(temp,1,sizeof(table),fp);
                 //cout<<"temp count:: "<<temp->count<<endl;
-                for(int i=0; i<temp->count; i++){
-                    string temp_str(temp->col[i].col_name);
+                for(int i = 0; i < temp->count; i++){
+                    std::string temp_str(temp->col[i].col_name);
                     //cout<<"temp: "<<temp_str<<endl;
                     display_col_list.insert(make_pair(temp_str,0));
                 }
@@ -62,8 +62,8 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                 printf("\ninternal server error\nexiting...\n\n");
                 return;
             }
-            map<string,int>::iterator it;
-            for(it=display_col_list.begin();it!=display_col_list.end();it++){
+            std::map <std::string, int> :: iterator it;
+            for(it = display_col_list.begin(); it != display_col_list.end(); it++){
                 //cout<<"col attributes::"<<it->first<<endl;
             }
         }
@@ -75,23 +75,23 @@ void select_particular_query(string table_name,string col_to_search,string col_v
             input = (table*)malloc(sizeof(table));
 			if(fpall){
                 //cout<<"fp not null\n";
-				fread(input,sizeof(table),1,fpall);
+				fread(input, sizeof(table), 1, fpall);
                 //cout<<"inp count:: "<<input->count<<endl;
-				for(int k=0; k<input->count; k++){
-					string temp_str(input->col[k].col_name);
+				for(int k = 0; k < input->count; k++){
+					std::string temp_str(input->col[k].col_name);
                     //cout<<"temp_str:: "<<temp_str<<endl;
-					map<string,int>::iterator it = display_col_list.find(temp_str);
+					std::map <std::string, int>::iterator it = display_col_list.find(temp_str);
 					if(it != display_col_list.end()){
                         //cout<<"it_first::"<<it->first<<endl;
 						it->second = 1;
 					}
 				}
-				map<string,int> :: iterator it = display_col_list.begin();
+				std::map <std::string, int> :: iterator it = display_col_list.begin();
 				for(it = display_col_list.begin(); it != display_col_list.end(); it++){
 					if(it->second == 0){
 						//column dont exist in table, query error
 						printf("\nerror\n");
-						cout<<it->first<<" is not a valid column for table "<<input->name<<"\n";
+						std::cout << it->first << " is not a valid column for table " << input->name << "\n";
 						return;
 					}
 				}
@@ -109,7 +109,7 @@ void select_particular_query(string table_name,string col_to_search,string col_v
             BPtree mytree(tab);
             int ret=0;
             table *temp2 = (table*)malloc(sizeof(table));
-            fread(temp2,sizeof(table),1,fpall2);
+            fread(temp2, sizeof(table), 1, fpall2);
             //cout<<"temp2 count:: "<<temp2->count<<endl;
             if(strcmp(temp2->col[0].col_name,col_to_search.c_str()) == 0){
                 //primary key, use btree for searching
@@ -122,32 +122,32 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                        FILE *fpz;
                        char *str1;
                        printf("\n------------------------------------\n");
-                       str1=(char*)malloc(sizeof(char)*MAX_PATH);
+                       str1 = (char*)malloc(sizeof(char)*MAX_PATH);
                        sprintf(str1,"table/%s/file%d.dat",tab,ret);
-                       fpz=fopen(str1,"r");
-                       for(int j=0; j < temp2->count;j++){
-                           string temp_str(temp2->col[j].col_name);
-                               if(temp2->col[j].type==INT){
-                                   fread(&c,1,sizeof(int),fpz);
+                       fpz = fopen(str1,"r");
+                       for(int j = 0; j < temp2->count; j++){
+                           std::string temp_str(temp2->col[j].col_name);
+                               if(temp2->col[j].type == INT){
+                                   fread(&c,1,sizeof(int), fpz);
                                    if(display_col_list.find(temp_str) != display_col_list.end())
-                                   cout<<c<<setw(20);
+                                      std::cout << c << setw(20);
                                }
-                               else if(temp2->col[j].type==VARCHAR){
+                               else if(temp2->col[j].type == VARCHAR){
                                    fread(d,1,sizeof(char)*MAX_NAME,fpz);
                                    if(display_col_list.find(temp_str) != display_col_list.end())
-                                   cout<<d<<setw(20);
+                                      std::cout << d << setw(20);
                                }
                        }
                        printf("\n------------------------------------\n");
                        fclose(fpz);
                        free(str1);
                    }
-               }else if(temp2->col[0].type==VARCHAR){
+               }else if(temp2->col[0].type == VARCHAR){
                    strcpy(pri_char,col_value.c_str());
                    void *arr[MAX_NAME];
-                   arr[0]=(char*)malloc(sizeof(char)*MAX_NAME);
-                   arr[0]=pri_char;
-                   ret=mytree.get_record(*(int*)arr[0]);
+                   arr[0] = (char*)malloc(sizeof(char)*MAX_NAME);
+                   arr[0] = pri_char;
+                   ret = mytree.get_record(*(int*)arr[0]);
                    if (ret == BPTREE_SEARCH_NOT_FOUND){
                        printf("\nkey %s don't exist !!!\n", pri_char);
                    }
@@ -155,22 +155,22 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                        //print the details of the particular row;
                        FILE *fpz;
                        char *str1;
-                       str1=(char*)malloc(sizeof(char)*MAX_PATH);
+                       str1 = (char*)malloc(sizeof(char)*MAX_PATH);
                        sprintf(str1,"table/%s/file%d.dat",tab,ret);
-                       fpz=fopen(str1,"r");
+                       fpz = fopen(str1,"r");
                        printf("\n------------------------------------\n");
-                       for(int j=0; j < temp2->count; j++){
-                           string temp_str(temp2->col[j].col_name);
+                       for(int j = 0; j < temp2->count; j++){
+                           std::string temp_str(temp2->col[j].col_name);
                          //  if(display_col_list.find(temp_str) != display_col_list.end()){
-                               if(temp2->col[j].type==INT){
-                                   fread(&c,1,sizeof(int),fpz);
+                               if(temp2->col[j].type == INT){
+                                   fread(&c, 1, sizeof(int), fpz);
                                    if(display_col_list.find(temp_str) != display_col_list.end())
-                                   cout<<c<<setw(20);
+                                   std::cout << c << setw(20);
                                }
-                               else if(temp2->col[j].type==VARCHAR){
-                                   fread(d,1,sizeof(char)*MAX_NAME,fpz);
+                               else if(temp2->col[j].type == VARCHAR){
+                                   fread(d, 1, sizeof(char)*MAX_NAME, fpz);
                                    if(display_col_list.find(temp_str) != display_col_list.end())
-                                   cout<<d<<setw(20);
+                                   std::cout << d << setw(20);
                                }
                          //  }
                        }
@@ -220,10 +220,10 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                             fpr=fopen(str,"r");
                             for(int j = 0; j < col_number; j++){
                                 //make it more efficient;
-                                    if(tempbf->col[j].type==INT){
+                                    if(tempbf->col[j].type == INT){
                                         fread(&c,1,sizeof(int),fpr);
                                         //cout<<"c::"<<c<<endl;
-                                    }else if(tempbf->col[j].type==VARCHAR){
+                                    }else if(tempbf->col[j].type == VARCHAR){
                                         fread(d,1,sizeof(char)*MAX_NAME,fpr);
                                         //cout<<"d:: "<<d<<endl;
                                     }
@@ -236,19 +236,19 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                                     int c1;
                                     char d1[MAX_NAME];
                                     fclose(fpr);
-                                    fpr=fopen(str,"r");
+                                    fpr = fopen(str,"r");
                                     printf("\n-------------------------------------\n");
-                                    for(int j=0; j < tempbf->count; j++){
-                                        string temp_str(tempbf->col[j].col_name);
-                                            if(tempbf->col[j].type==INT){
+                                    for(int j = 0; j < tempbf->count; j++){
+                                        std::string temp_str(tempbf->col[j].col_name);
+                                            if(tempbf->col[j].type == INT){
                                                 fread(&c1,1,sizeof(int),fpr);
                                                 if(display_col_list.find(temp_str) != display_col_list.end())
-                                                cout<<c1<<setw(20);
+                                                std::cout << c1 << setw(20);
                                             }
-                                            else if(tempbf->col[j].type==VARCHAR){
+                                            else if(tempbf->col[j].type == VARCHAR){
                                                 fread(d1,1,sizeof(char)*MAX_NAME,fpr);
                                                 if(display_col_list.find(temp_str) != display_col_list.end())
-                                                cout<<d1<<setw(20);
+                                                std::cout << d1 << setw(20);
                                             }
                                     }
                                     printf("\n-------------------------------------\n");
@@ -263,17 +263,17 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                                     fclose(fpr);
                                     fpr=fopen(str,"r");
                                     printf("\n-------------------------------------\n");
-                                    for(int j=0; j < tempbf->count; j++){
-                                        string temp_str(tempbf->col[j].col_name);
-                                            if(tempbf->col[j].type==INT){
-                                                fread(&c1,1,sizeof(int),fpr);
+                                    for(int j = 0; j < tempbf->count; j++){
+                                        std::string temp_str(tempbf->col[j].col_name);
+                                            if(tempbf->col[j].type == INT){
+                                                fread(&c1, 1, sizeof(int), fpr);
                                                 if(display_col_list.find(temp_str) != display_col_list.end())
-                                                cout<<c1<<setw(20);
+                                                std::cout << c1 << setw(20);
                                             }
-                                            else if(tempbf->col[j].type==VARCHAR){
+                                            else if(tempbf->col[j].type == VARCHAR){
                                                 fread(d1,1,sizeof(char)*MAX_NAME,fpr);
                                                 if(display_col_list.find(temp_str) != display_col_list.end())
-                                                cout<<d1<<setw(20);
+                                                std::cout << d1 << setw(20);
                                             }
                                     }
                                     printf("\n-------------------------------------\n");
@@ -283,7 +283,7 @@ void select_particular_query(string table_name,string col_to_search,string col_v
                                 printf("\ninternal server error\nexiting...\n\n");
                                 return;
                             }
-                            cout<<"\n\n";
+                            std::cout << "\n\n";
                             free(str);
                             fclose(fpr);
                             if(flag == 1){
