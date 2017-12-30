@@ -79,6 +79,13 @@ class Btreenode
 
     /*Function that performs binary search and returns the
        correct child. For Internal Nodes */
+    /*
+    std::lower_bound()
+      Returns an iterator pointing to the first element in
+       the range [first,last) which does not compare less than val.
+       If all the element in the range compare less than val, the
+       function returns last.
+    */
     int get_next_key(int search_key){
         return (std::lower_bound(keys.begin(), keys.end(),
                                  search_key) - keys.begin());
@@ -257,8 +264,8 @@ BPtree :: BPtree(char table_name[]){
         files_till_now = root_num = 0;
         out_file.write((char *) (&files_till_now), sizeof(files_till_now));
         out_file.write((char *) (&root_num), sizeof(root_num));
-        //out_file << files_till_now << " " << root_num;
         out_file.close();
+
         //initialize with root node =leaf node;
         Btreenode root(true);
         //set next_node=-1; as it is root;
@@ -339,14 +346,14 @@ int BPtree::insert_record(int primary_key, int record_num){
     Btreenode n(true);
     int q, j, prop_n, prop_k, prop_new, curr_node = root_num;
     bool finish = false;
-    std::stack < int > S;
+    std::stack < std::pair<int, Btreenode> > S;
     //read all the data of node stored in file tree%d.data (%d==curr_node=root_num=file_no);
 	//now n contains all the previously stored data;
     read_node(curr_node, n);
 
     //Traverse the tree till we get the leaf node;
     while (!n.isleaf()){
-        S.push(curr_node);      //Storing address in case of split
+        S.push(make_pair(curr_node,n));      //Storing address in case of split
         //num_pointers==function that returns size of pointers vector from the block file;
         q = n.num_pointers();
         if (primary_key <= n.get_key(1)){
@@ -424,9 +431,11 @@ int BPtree::insert_record(int primary_key, int record_num){
             root_num = files_till_now;
             finish = true;
         }else{
-            curr_node = S.top();
+            std::pair<int, Btreenode> p = S.top();
+            curr_node = p.first;
+            n = p.second;
             S.pop();
-            read_node(curr_node, n);
+            // read_node(curr_node, n);
             if (!n.full()){
                 n.insert_key(prop_k, prop_new);
                 write_node(curr_node, n);

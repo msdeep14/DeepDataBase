@@ -50,6 +50,7 @@
 #include <map>
 #include <unordered_set>
 #include <unordered_map>
+#include <utility>
 
 
 #define INT 1
@@ -90,8 +91,8 @@ struct table{
 	int size; //size of record
 	int data_size;
 	int BLOCKSIZE;
-	FILE *fp;
-	void *blockbuf;
+	FILE *fp; // .rec file
+	void *blockbuf; // store the pointers to the blocks of table loaded
 	int rec_count; //no of enteries in table
 };
 

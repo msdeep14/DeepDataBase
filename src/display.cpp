@@ -28,9 +28,9 @@
 #include "file_handler.h"
 #include "where.h"
 
-void display(char tab[], std::map<string,int> &display_col_list);
+void display(char tab[], std::map<std::string,int> &display_col_list);
 
-void process_select(vector <string> &token_vector){
+void process_select(std::vector <std::string> &token_vector){
 	std::map <std::string,int> display_col_list;
 	int numOfCol = 0;
 	//flag to check if query contains where part
@@ -53,10 +53,10 @@ void process_select(vector <string> &token_vector){
 	if((int)token_vector.size() > numOfCol + 3){
 		if(token_vector[numOfCol + 3] == "where"){
 			whereflag = 1;
-			string col_to_search = token_vector[numOfCol + 4];
-			string col_value = token_vector[numOfCol + 6];
+			std::string col_to_search = token_vector[numOfCol + 4];
+			std::string col_value = token_vector[numOfCol + 6];
 			//cout<<"\ncoltoSearch:: "<<col_to_search<<"\n";
-			string table_name = token_vector[numOfCol + 2];
+			std::string table_name = token_vector[numOfCol + 2];
 			//cout<<"table_name :: "<<table_name<<endl;
 			select_particular_query(table_name,col_to_search,col_value,display_col_list);
 		}else{
@@ -75,9 +75,9 @@ void process_select(vector <string> &token_vector){
 	}
 }
 
-void display(char tab[], std::map<string,int> &display_col_list){
+void display(char tab[], std::map<std::string,int> &display_col_list){
 	//printf("\n111\n");
-	vector<int> store_col_no;
+	std::vector<int> store_col_no;
 	int ret=search_table(tab);
 	if(ret==0) {
 		printf("%s doesn't exist\n\n",tab);
@@ -94,13 +94,13 @@ void display(char tab[], std::map<string,int> &display_col_list){
 			if(fp){
 				fread(temp,1,sizeof(table),fp);
 				for(int k=0; k<temp->count; k++){
-					string temp_str(temp->col[k].col_name);
-					map<string,int>::iterator it = display_col_list.find(temp_str);
+					std::string temp_str(temp->col[k].col_name);
+					std::map<std::string,int>::iterator it = display_col_list.find(temp_str);
 					if(it != display_col_list.end()){
 						it->second = 1;
 					}
 				}
-				map<string,int> :: iterator it = display_col_list.begin();
+				std::map<std::string,int> :: iterator it = display_col_list.begin();
 				for(it = display_col_list.begin(); it != display_col_list.end(); it++){
 					if(it->second == 0){
 						//column dont exist in table, query error
