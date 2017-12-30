@@ -1,5 +1,8 @@
 /*
-// code references : DFC query builder by BUG_ASSASINS team
+  // code references : DFC query builder by BUG_ASSASINS team
+  // File    : BPtree.cpp
+  // Author  : extra modifications and optimizations done by Mandeep Singh
+  // Purpose : store indexed data to disk
 */
 
 #include "BPtree.h"
@@ -220,7 +223,7 @@ void BPtree :: write_node(int filenum, Btreenode n){
     sprintf(str, "table/%s/tree/tree%d.dat", tablename,filenum);
     std::ofstream out_file(str, std::ofstream::binary |  std::ofstream::out | std::ofstream::trunc);
     free(str);
-    //write data to out_file root=n()
+    //write data to out_file root = n()
     out_file << n;
     out_file.close();
 }
@@ -266,7 +269,7 @@ BPtree :: BPtree(char table_name[]){
         out_file.write((char *) (&root_num), sizeof(root_num));
         out_file.close();
 
-        //initialize with root node =leaf node;
+        //initialize with root node = leaf node;
         Btreenode root(true);
         //set next_node=-1; as it is root;
         root.set_next(-1);
@@ -304,11 +307,10 @@ Btreenode BPtree::search_leaf(int primary_key){
     //Traversing the Tree from root till leaf
     while (!n.isleaf()){
         q = n.num_pointers();
-        //check primary key if it is smaller than the key[0]
         if (primary_key <= n.get_key(1)){
             //set curr_node =pointers[0];
             curr_node = n.get_pointer(1);
-        }//check if primary key is greater than key[q-1];// q==size of vector keys;
+        }
         else if (primary_key > n.get_key(q - 1)){
             //set curr_node = pointers[q-1];
             curr_node = n.get_pointer(q);
@@ -329,7 +331,7 @@ int BPtree::get_record(int primary_key){
     int pos = n.get_next_key(primary_key) + 1;
     clock_t stop=clock();
     double elapsed=(double)(stop-start)*1000.0/CLOCKS_PER_SEC;
-    printf("\nTime elapsed for search is %f ms",elapsed);
+    printf("\nTime elapsed for search is %f ms\n",elapsed);
     if (pos <= n.num_keys() && n.get_key(pos) == primary_key){
         return n.get_pointer(pos);
     }else{
@@ -339,22 +341,22 @@ int BPtree::get_record(int primary_key){
 
 /* A function the inserts a (key, record_num) pair in the
     B+ Tree */
-//key is first coloumn of database either can be int or varchar;
+// key is first coloumn of database either can be int or varchar;
 int BPtree::insert_record(int primary_key, int record_num){
-	//printf("pri %d\n record_num %d",primary_key,record_num);
-    //Btreenode n= leaf=true, next_node =-1;
+	 //printf("pri %d\n record_num %d",primary_key,record_num);
+   // Btreenode n= leaf=true, next_node =-1;
     Btreenode n(true);
     int q, j, prop_n, prop_k, prop_new, curr_node = root_num;
     bool finish = false;
     std::stack < std::pair<int, Btreenode> > S;
-    //read all the data of node stored in file tree%d.data (%d==curr_node=root_num=file_no);
-	//now n contains all the previously stored data;
+    // read all the data of node stored in file tree%d.data (%d==curr_node=root_num=file_no);
+	  // now n contains all the previously stored data;
     read_node(curr_node, n);
 
-    //Traverse the tree till we get the leaf node;
+    // Traverse the tree till we get the leaf node;
     while (!n.isleaf()){
-        S.push(make_pair(curr_node,n));      //Storing address in case of split
-        //num_pointers==function that returns size of pointers vector from the block file;
+        S.push(make_pair(curr_node,n));      // Storing address in case of split
+        // num_pointers==function that returns size of pointers vector from the block file;
         q = n.num_pointers();
         if (primary_key <= n.get_key(1)){
             curr_node = n.get_pointer(1);
@@ -363,24 +365,23 @@ int BPtree::insert_record(int primary_key, int record_num){
         }else{
             curr_node = n.get_pointer(n.get_next_key(primary_key) + 1);
         }
-        //get all the data of node n from file tree%d.dat(%d==curr_node);
+        // get all the data of node n from file tree%d.dat(%d==curr_node);
         read_node(curr_node, n);
     }
 
-    //Here n is Leaf Node
-    //if key exist exist then return;
-    //key exist
+    // Here n is Leaf Node
+    // if key already exists then return ERROR
     if (n.search_key(primary_key)) {
         return BPTREE_INSERT_ERROR_EXIST;
     }
 
+    /*
+      if n is not full, insert key and pointer to node
+      write back node to file, update meta_data and return
+    */
     if (!n.full()){
-        //leaf node empty insert here and exit
         n.insert_key(primary_key, record_num);
-        //n is updated now;
-		//now write this node back to file;
         write_node(curr_node, n);
-        //update meta-data after key is inserted successfully;
         update_meta_data();
         return BPTREE_INSERT_SUCCESS;
     }
@@ -389,27 +390,32 @@ int BPtree::insert_record(int primary_key, int record_num){
     Btreenode temp(true), new_node(true);
 
     temp = n;
-    //insert the key and pointer into n i.e. temp now;
     temp.insert_key(primary_key, record_num);
     j = ceil((BPTREE_MAX_KEYS_PER_NODE + 1.0) / 2.0);
-    //if max_key_per_node = 30;; j=16;
-    //copy the first half values to new node(temp) created;
+    // if max_key_per_node = 4, j = 3
+    // copy the first j values of temp to node n
+    // and remaining to new_node
     n.copy_first(temp, j);
     //now one file is increased to store the new node;
     files_till_now++;
-    //  set new_node to returned next_node;
+    // next pointer of new_node will be next pointer of n
+    // and next pointer of n will be newly created node new_node
     new_node.set_next(n.get_next());
     n.set_next(files_till_now);
-    //copy remaining values to other node created(new_node);
     new_node.copy_last(temp, j);
-    //return keys[j-1];
+
+    /*
+      prop_k is key to be inserted into root
+      and prop_new and prop_n are pointers to
+      be attached to this root value
+    */
     prop_k = temp.get_key(j); // key to be moved to new root
     prop_new = files_till_now;
-    prop_n = curr_node; // node that is splitted at first place
-    //write back the two new nodes created to their respective files;
+    prop_n = curr_node;
+
+    // write back the two new nodes created
     write_node(files_till_now, new_node);
     write_node(curr_node, n);
-    //empty keys[] and pointers[];
     temp.clear_data();
     new_node.clear_data();
 

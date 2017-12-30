@@ -31,7 +31,7 @@
 void display(char tab[], std::map<std::string,int> &display_col_list);
 
 void process_select(std::vector <std::string> &token_vector){
-	std::map <std::string,int> display_col_list;
+	std::map <std::string, int> display_col_list;
 	int numOfCol = 0;
 	//flag to check if query contains where part
 	int whereflag = 0;
@@ -40,13 +40,13 @@ void process_select(std::vector <std::string> &token_vector){
 		display_col_list.insert(make_pair("all_columns_set",0));
 		numOfCol = 1;
 	}else{
-		for(unsigned int i=1; i<token_vector.size()-2; i++){
+		for(unsigned int i = 1; i<token_vector.size()-2; i++){
 			if(token_vector[i] == "from"){
 				break;
 			}else{
 				//cout<<token_vector[i]<<endl;
 				numOfCol += 1;
-				display_col_list.insert(make_pair(token_vector[i],0));
+				display_col_list.insert(make_pair(token_vector[i], 0));
 			}
 		}
 	}
@@ -58,7 +58,7 @@ void process_select(std::vector <std::string> &token_vector){
 			//cout<<"\ncoltoSearch:: "<<col_to_search<<"\n";
 			std::string table_name = token_vector[numOfCol + 2];
 			//cout<<"table_name :: "<<table_name<<endl;
-			select_particular_query(table_name,col_to_search,col_value,display_col_list);
+			select_particular_query(table_name,col_to_search,col_value, display_col_list);
 		}else{
 			printf("\nsyntaz error\n");
 			return;
@@ -75,37 +75,37 @@ void process_select(std::vector <std::string> &token_vector){
 	}
 }
 
-void display(char tab[], std::map<std::string,int> &display_col_list){
+void display(char tab[], std::map<std::string, int> &display_col_list){
 	//printf("\n111\n");
 	std::vector<int> store_col_no;
 	int ret=search_table(tab);
 	if(ret==0) {
 		printf("%s doesn't exist\n\n",tab);
 		return ;
-	}else if(ret==1){
+	}else if(ret == 1){
 		table *temp;
 		int count;
 		//int tot=0;
-		temp=(table*)malloc(sizeof(table));
-		FILE *fp=open_file(tab,const_cast<char*>("r"));
-		//table exists
-		//now check if entered columns are valid
+		temp = (table*)malloc(sizeof(table));
+		FILE *fp = open_file(tab,const_cast<char*>("r"));
+		// table exists
+		// now check if entered columns are valid
 		if(display_col_list.find("all_columns_set") == display_col_list.end()){
 			if(fp){
-				fread(temp,1,sizeof(table),fp);
-				for(int k=0; k<temp->count; k++){
+				fread(temp, 1, sizeof(table), fp);
+				for(int k = 0; k < temp->count; k++){
 					std::string temp_str(temp->col[k].col_name);
 					std::map<std::string,int>::iterator it = display_col_list.find(temp_str);
 					if(it != display_col_list.end()){
 						it->second = 1;
 					}
 				}
-				std::map<std::string,int> :: iterator it = display_col_list.begin();
+				std::map<std::string, int> :: iterator it = display_col_list.begin();
 				for(it = display_col_list.begin(); it != display_col_list.end(); it++){
 					if(it->second == 0){
 						//column dont exist in table, query error
 						printf("\nerror\n");
-						cout<<it->first<<" is not a valid column for table "<<temp->name<<"\n";
+						std::cout << it->first << " is not a valid column for table " << temp->name << "\n";
 						return;
 					}
 				}
@@ -119,8 +119,8 @@ void display(char tab[], std::map<std::string,int> &display_col_list){
 		*/
 
 		if(fp){
-			fread(temp,1,sizeof(table),fp);
-			count=temp->count;
+			fread(temp, 1, sizeof(table), fp);
+			count = temp->count;
 			if(temp->count == 0 || temp->rec_count == 0){
 				system("clear");
 				printf("\ntable empty\n\n");
@@ -130,11 +130,11 @@ void display(char tab[], std::map<std::string,int> &display_col_list){
 			//display all columns;
 			printf("\n-----------------------------------------------\n");
 			if(display_col_list.find("all_columns_set") != display_col_list.end()){
-				for(int i=0;i<temp->count;i++){
-					cout<<temp->col[i].col_name<<setw(20);
+				for(int i = 0; i < temp->count; i++){
+					std::cout << temp->col[i].col_name << setw(20);
 				}
 				fclose(fp);
-				cout<<"\n";
+				std::cout << "\n";
 				printf("-----------------------------------------------\n");
 
 				int c;
@@ -144,41 +144,41 @@ void display(char tab[], std::map<std::string,int> &display_col_list){
 						FILE *fpr;
 						char *str;
 						str=(char*)malloc(sizeof(char)*MAX_PATH);
-						sprintf(str,"table/%s/file%d.dat",tab,i);
+						sprintf(str, "table/%s/file%d.dat", tab, i);
 						//cout<<str<<endl;
-						fpr=fopen(str,"r");
-						for(int j=0;j<temp->count;j++){
-							if(temp->col[j].type==INT){
-								fread(&c,1,sizeof(int),fpr);
-								cout<<c<<setw(20);
-							}else if(temp->col[j].type==VARCHAR){
-								fread(d,1,sizeof(char)*MAX_NAME,fpr);
-								cout<<d<<setw(20);
+						fpr = fopen(str, "r");
+						for(int j = 0; j < temp->count; j++){
+							if(temp->col[j].type == INT){
+								fread(&c, 1, sizeof(int), fpr);
+								std::cout << c << setw(20);
+							}else if(temp->col[j].type == VARCHAR){
+								fread(d, 1, sizeof(char)*MAX_NAME, fpr);
+								std:: cout << d << setw(20);
 							}
 						}
-						cout<<"\n\n";
+						std::cout << "\n\n";
 						free(str);
 						fclose(fpr);
 				}
 			}else{ //display selected columns;
-				for(int i=0; i<temp->count; i++){
-					string temp_col_name(temp->col[i].col_name);
+				for(int i = 0; i < temp->count; i++){
+					std::string temp_col_name(temp->col[i].col_name);
 					if(display_col_list.find(temp_col_name) != display_col_list.end()){
 						store_col_no[i] = 1;
-						cout<<temp->col[i].col_name<<setw(20);
+						std::cout << temp->col[i].col_name << setw(20);
 					}
 				}
 				fclose(fp);
-				cout<<"\n";
+				std::cout << "\n";
 				printf("-----------------------------------------------\n");
 
 				int c1;
 				char d1[MAX_NAME];
 				//cout<<"C........"<<c<<endl;
-				for(int i=0;i<temp->rec_count;i++){
+				for(int i = 0; i < temp->rec_count; i++){
 						FILE *fpt;
 						char *str;
-						str=(char*)malloc(sizeof(char)*MAX_PATH);
+						str = (char*)malloc(sizeof(char)*MAX_PATH);
 						sprintf(str,"table/%s/file%d.dat",tab,i);
 						//cout<<str<<endl;
 						/*int f;
@@ -190,24 +190,24 @@ void display(char tab[], std::map<std::string,int> &display_col_list){
     						fclose(file);
 						}*/
 
-						fpt=fopen(str,"r");
-						for(int j=0;j<temp->count;j++){
+						fpt = fopen(str,"r");
+						for(int j = 0;j < temp->count; j++){
 							//if(store_col_no[j] == 1){
 							//make it more efficient;
-								if(temp->col[j].type==INT){
-									fread(&c1,1,sizeof(int),fpt);
+								if(temp->col[j].type == INT){
+									fread(&c1, 1, sizeof(int), fpt);
 									if(store_col_no[j] == 1)
-									cout<<c1<<setw(20);
-								}else if(temp->col[j].type==VARCHAR){
+									std::cout << c1 << setw(20);
+								}else if(temp->col[j].type == VARCHAR){
 									//fread(d,1,sizeof(char)*MAX_NAME,fpr);
 									//cout<<"d::"<<d<<endl;
 									fread(d1,1,sizeof(char)*MAX_NAME,fpt);
 									if(store_col_no[j] == 1)
-									cout<<d1<<setw(20);
+									std::cout << d1 << setw(20);
 								}
 							//}
 						}
-						cout<<"\n\n";
+						std::cout << "\n\n";
 						free(str);
 						fclose(fpt);
 				}
@@ -223,14 +223,14 @@ void show_tables(){
 	char *name;
 	printf("\n\nLIST OF TABLES\n\n");
 	printf("---------------------------\n");
-	int tabcount=0;
-	name=(char*)malloc(sizeof(char)*MAX_NAME);
-	FILE *fp=fopen("./table/table_list","r+");
-	while(fscanf(fp,"%s",name)!=EOF){
+	int tabcount = 0;
+	name = (char*)malloc(sizeof(char)*MAX_NAME);
+	FILE *fp = fopen("./table/table_list","r+");
+	while(fscanf(fp,"%s",name) != EOF){
 		tabcount++;
-		cout<<name<<"\n";
+		std::cout << name << "\n";
 	}
-	if(tabcount==0) printf("Database empty!!!\n");
+	if(tabcount == 0) printf("Database empty!!!\n");
 	printf("---------------------------\n");
 	free(name);
 }
