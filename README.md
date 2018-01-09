@@ -2,7 +2,7 @@
 
 #### A Relational database model, data storage based on B+ tree indexing
 
-![logo](https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png)
+![logo](https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png=100x20)
 
 
 
