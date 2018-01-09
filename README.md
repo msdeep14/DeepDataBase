@@ -2,9 +2,7 @@
 
 #### A Relational database model, data storage based on B+ tree indexing
 
-![logo](https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png=100x20)
-
-
+<img src="https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png" width="300" height="200" />
 
 ## initial development : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
 
@@ -69,4 +67,11 @@ select * from table_name;
 select id,name from table_name;
 
 select id,name from table_name where id = 1;
+
+## CONTRIBUTE:
+You can contribute in following modules:
+
+	1. parser implementation
+	2. AES encryption of data, in branch dev-aes
+	3. Suggestion for more efficient implementation
  
