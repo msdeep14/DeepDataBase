@@ -40,7 +40,7 @@ A separate multilevel B+ tree is created for each table. Each node contains maxi
  For searching a record in file for particular table, B+ tree indexed search is implemented.B+ indexed search is based on primary key
  
 ##### 2. Brute Force Search
-For searching records other than primary key from table, brute force search algorithm is implemented.
+For searching records without providing primary key from table, brute force search algorithm is implemented.
  
  Advantages of B+ Tree Indexing [here](https://www.tutorialcup.com/dbms/b-plus-tree.htm)
  
@@ -49,7 +49,7 @@ System also calculates the time taken by the search algorithm.
 ## DEVELOPMENT:
 The whole project is initially done on eclipse platform(C/C++ perspective)-> in repo [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
 
-Further modifications are done on linux
+Further modifications are done on Ubuntu System, [Atom](https://atom.io/) editor.
 
 For execution: Open directory DeepDatabase(branch:master) and on terminal
 
