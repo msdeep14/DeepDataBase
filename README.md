@@ -2,6 +2,8 @@
 
 #### A Relational database model, data storage based on B+ tree indexing
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 <img src="https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png" width="300" height="200" />
 
 ## initial development : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
