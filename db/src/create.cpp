@@ -60,7 +60,7 @@ table * create_table(char name[], int count){
 
 	//enter the data for columns of table
 	int i = 0;
-	cout << "\nEnter column name,Data type(1.int 2.varchar) and max size(max allowed int=6,char=99) of column\n";
+	cout << "\nEnter column name,Data type(1.int 2.varchar) and max size(max allowed int=6,char=99) of column\n(For example: id 1 5)\n";
 	for(i = 0; i < count; i++){
 		std::string type;
 		std::string size;
