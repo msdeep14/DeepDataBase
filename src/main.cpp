@@ -142,17 +142,20 @@ int main(int argc,char *argv[]) {
 	//cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	//confirm identity of user
 	//./deepdb -u username -p password
-	/*
-	cout<<argc<<endl;
+
 	if(argc == 4 || argc == 5){
 		if(strcmp(argv[1],"-u") == 0 && strcmp(argv[3],"-p") == 0){
 			//check identification
 			char *username = (char*)malloc(sizeof(char)*MAX_NAME);
 			strcpy(username,argv[2]);
-			cout<<"username::"<<username<<endl;
-			char *pass = (char*)malloc(sizeof(char)*MAX_NAME);
-			system("read password");
+			const char *mypass="pass";
+			char *password=getpass("Enter password: ");
 
+			if(strcmp(password,mypass)==0) cout <<"Correct password!\n";
+			else {
+				cout <<"Incorrect password!\n";
+				return 0;
+			}
 		}else{
 			printf("\nusage:: ./deepdb -u username -p password\n.exiting...\n\n");
 			return 0;
@@ -161,7 +164,7 @@ int main(int argc,char *argv[]) {
 		printf("\nusage:: ./deepdb -u username -p password\n.exiting...\n\n");
 		return 0;
 	}
-	*/
+
 	start_system();
 
 	return 0;
