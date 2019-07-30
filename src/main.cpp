@@ -98,6 +98,7 @@ void input(){
 				break;
 			case 2:
 				create();
+				//parse_create();
 				break;
 			case 3:
 				insert();

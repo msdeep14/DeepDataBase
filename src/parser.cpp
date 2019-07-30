@@ -40,6 +40,8 @@
 */
 #include "parser.h"
 #include "display.h"
+#include<cstring>
+#include<iostream>
 
 //tokenize select query for processing
 void tokenize_select(char query[]){
@@ -61,10 +63,30 @@ void tokenize_select(char query[]){
 
 //tokenize create query for processing
 void tokenize_create(char query[]){
-    /*
-        create table table_name(id int not null,name varchar(20),city varchar(30) not null, primary key(id));
-    */
+    // CREATE TABLE [IF NOT EXISTS] <tablename> (<column1> <datatype>, <column2> <datatype>, PRIMARY KEY(<column1>));
 
+    /*
+    * implementation1
+    CREATE TABLE <tablename> (<column1> <datatype>, <column2> <datatype>);
+    */
+    char buffer[1024];
+    vector <string> token_vector;
+
+    strcpy(buffer, query);
+    char *token = strtok(buffer, " ,;");
+    while (token) {
+        string token_temp(token);
+        if(token_temp != " " && token_temp != "\n" ){
+          std::transform(token_temp.begin(), token_temp.end(), token_temp.begin(), ::tolower);
+            token_vector.push_back(token_temp);
+        }
+        token = strtok(NULL, " ,;");
+    }
+
+    // for(int i=0;i<token_vector.size();i++){
+    //     cout<<token_vector[i]<<endl;
+    // }
+    cout<<endl;
 }
 
 void get_query(){
@@ -96,10 +118,16 @@ void get_query(){
     //printf("\nquery:: %s\n",query);
 }
 
-/*
-int main(){
-    get_query();
+void parse_create(){
+  string s;
+  cout<<"enter create query\n";
+  cin.ignore();
+  getline (cin, s);
+  int openpos = s.find("(");
+  int closepos = s.find(")");
+  string token = s.substr(0, openpos);
+  string tbetween = s.substr(openpos+1, s.length()-openpos-2);
+  cout<<token<<endl;
+  cout<<tbetween<<endl;
 
-    return 0;
 }
-*/

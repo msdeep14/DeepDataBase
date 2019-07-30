@@ -250,7 +250,7 @@ BPtree :: BPtree(char table_name[]){
     char *str;
     str = (char *) malloc(sizeof(char) * BPTREE_MAX_FILE_PATH_SIZE);
     sprintf(str, "mkdir -p table/%s/tree", tablename);
-    cout<<"str"<<str<<endl;
+    // cout<<"str"<<str<<endl;
     system(str);
     sprintf(str, "table/%s/tree/meta_tree.dat", tablename);
 
