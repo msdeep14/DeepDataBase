@@ -6,7 +6,9 @@
 
 <img src="https://github.com/msdeep14/DeepDataBase/blob/master/images/deepdb.png" width="300" height="200" />
 
-## initial development : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
+*initial development* : [MiniDataBase](https://github.com/msdeep14/MiniDataBase)
+
+References from - https://github.com/Bug-Assassins/DFC_query_builder
 
 ## QUERIES SUPPORTED BY SYSTEM
 1. SHOW Tables
